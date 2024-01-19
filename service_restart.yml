@@ -1,0 +1,11 @@
+---
+- name: Restart Service based on Event-Driven Ansible rulebook
+  hosts: "{{ _hosts }}"
+  become: true
+  vars:
+
+  tasks:
+  - name: Restart Service
+    ansible.builtin.service:
+      name: < insert service name >
+      state: restarted
