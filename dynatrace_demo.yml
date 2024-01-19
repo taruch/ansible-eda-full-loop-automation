@@ -1,0 +1,22 @@
+---
+- name: Listen for events on Dynatrace API
+  hosts: all
+  sources:
+    - dynatrace.event_driven_ansible.dt_esa_api:
+        dt_api_host: ""
+        dt_api_token: ""
+        delay: 60
+
+  rules:
+
+    - name: JBOSS Service Unavailable
+      condition: event.payload is defined
+      action:
+        run_job_template:
+          name: Splunk Resolve Issue Demo
+          organization: Default
+          job_args:
+            extra_vars:
+               eventdata: "{{ event.payload.result }}"
+               _hosts: "{{ event.payload.result.host }}"
+               sleep: 1
